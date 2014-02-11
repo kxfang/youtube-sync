@@ -1,0 +1,48 @@
+<head>
+  <title>youtube-sync</title>
+</head>
+
+<body>
+  {{> page}}
+</body>
+
+<template name="page">
+  {{>lobby}}
+  {{>users}}
+  {{>chat}}
+</template>
+
+<template name="lobby">
+  <div id="lobby">
+    {{#if show}}
+      <h1>Enter your name:</h1>
+      <input id="username" type="text" />
+      <button id="enter">Go</button>
+    {{/if}}
+  </div>
+</template>
+
+<template name="users">
+  {{#if show}}
+    <h1>Users:</h1>
+    {{#each users}}
+      <h2>{{name}}</h2>
+    {{/each}}
+  {{/if}}
+</template>
+
+<template name="chat">
+  {{#if show}}
+    <div id="chat">
+      <h1>Messages</h1>
+      {{#each messages}}
+        <div>
+          <b>{{username}}:</b>
+          {{text}}
+        </div>
+      {{/each}}
+      <input id="chat-input" type="text" />
+      <button id="send">Send</button>
+    </div>
+  {{/if}}
+</template>
