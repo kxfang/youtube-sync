@@ -1,5 +1,6 @@
 <head>
   <title>youtube-sync</title>
+  <script type="text/javascript"></script>
 </head>
 
 <body>
@@ -9,6 +10,7 @@
 <template name="page">
   {{>lobby}}
   {{>users}}
+  {{>video}}
   {{>chat}}
 </template>
 
@@ -26,7 +28,7 @@
   {{#if show}}
     <h1>Users:</h1>
     {{#each users}}
-      <h2>{{name}}</h2>
+      {{name}}
     {{/each}}
   {{/if}}
 </template>
@@ -45,4 +47,30 @@
       <button id="send">Send</button>
     </div>
   {{/if}}
+</template>
+
+<template name="video">
+  {{#if show}}
+    <div id="video">
+      <input id="video-src" type="text" />
+      <div id="ytplayer">
+      </div>
+      {{>control}}
+      {{>slider}}
+    </div>
+  {{/if}}
+</template>
+
+<template name="control">
+  <button id="video-play">
+    {{#if isPlaying}}
+      Stop
+    {{else}}
+      Play
+    {{/if}}
+  </button>
+</template>
+
+<template name="slider">
+  <div id="video-slider"></div>
 </template>
