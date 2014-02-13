@@ -5,7 +5,7 @@ Users = new Meteor.Collection("users");
 var Room = function () {
   this.users = [];
   this.messages = [];
-  this.videoId = '#';
+  this.videoId = 'jofNR_WkoCE';
   this.videoPlaying = false;
   this.videoTime = 0;
 }
@@ -94,9 +94,9 @@ if (Meteor.isClient) {
     var roomQuery = Rooms.find(Session.get('roomId'));
     player = new YT.Player('ytplayer', {
       videoId: roomQuery.fetch()[0].videoId,
-      width: '640',
-      height: '390',
-      playerVars: { autoplay: 0, controls: 0 },
+      width: '800',
+      height: '450',
+      playerVars: { autoplay: 0, controls: 0, showinfo: 0 },
       events: {
         onReady: function (evt) {
           if (getRoom().videoPlaying) {
@@ -147,10 +147,27 @@ if (Meteor.isClient) {
         }
       }
     });
+
+    $("[data-toggle='tooltip']").tooltip();
+
+    var messagesBox = $('div.messages');
+    messagesBox.scrollTop(messagesBox[0].scrollHeight);
+
+    Meteor.setInterval(function () {
+      if (messagesBox.scrollTop() + messagesBox.height() > messagesBox[0].scrollHeight - 100) {
+        messagesBox.scrollTop(messagesBox[0].scrollHeight);
+      }
+    }, 200);
+
+    $('textarea#chat-input').keypress(function (evt) {
+      if (evt.keyCode == 13 && !evt.shiftKey) {
+        evt.preventDefault();
+      }
+    });
   }
 
   var onSendMessage = function () {
-    var input = $('#chat input#chat-input');
+    var input = $('#chat textarea#chat-input');
     var text = input.val().trim();
     input.val('');
     sendMessage(Session.get('roomId'), Session.get('userId'), text);
@@ -166,15 +183,7 @@ if (Meteor.isClient) {
     return !inRoom();
   };
 
-  Template.users.show = function () {
-    return inRoom();
-  }
-
-  Template.chat.show = function () {
-    return inRoom();
-  }
-
-  Template.video.show = function () {
+  Template.room.show = function () {
     return inRoom();
   }
 
@@ -220,39 +229,59 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.chat.messages = function () {
+  var toggleVideoPlay = function () {
+    if (!getRoom().videoPlaying) {
+      Rooms.update(Session.get('roomId'), {$set: { videoPlaying: true }});
+    } else {
+      Rooms.update(Session.get('roomId'), {$set: { videoPlaying: false }});
+    }
+  }
+
+  Template.messages.messages = function () {
     return Rooms.findOne(Session.get('roomId')).messages.map(function (message) {
       message.username = getUsername(message.user);
       return message;
     });
   };
 
-  Template.video.events({
+  Template.search.events({    
     'keyup input#video-src': function (evt) {
-      console.log("asdf");
-      updateVideo(Session.get('roomId'), $('#video input#video-src').val().trim());
+    console.log("here");     
+      var input = $('input#video-src').val().trim();
+      var videoId;
+      if (input.indexOf("v=") == -1) {
+        videoId = input;
+      } else {
+        var split = input.split("v=");
+        if (split[1].indexOf("&") != -1) {
+          videoId = split[1].split("&")[0];
+        } else {
+          videoId = split[1];
+        }
+      }
+      console.log(videoId);
+      updateVideo(Session.get('roomId'), videoId);
+    }
+  }); 
+
+  Template.video.events({
+    'click div#iframe-overlay': function (evt) {
+      toggleVideoPlay();
     }
   });
 
   Template.control.events({
-    'click button#video-play': function (evt) {
-      if (!getRoom().videoPlaying) {
-        Rooms.update(Session.get('roomId'), {$set: { videoPlaying: true }});
-      } else {
-        Rooms.update(Session.get('roomId'), {$set: { videoPlaying: false }});
-        // syncPlayerTimes();
-      }
+    'click div#video-play': function (evt) {
+      toggleVideoPlay();
     }
   });
 
   Template.chat.events({
-    'keyup input#chat-input': function (evt) {
-      if (evt.keyCode == 13) { 
+    'keyup textarea#chat-input': function (evt) {
+      if (evt.keyCode == 13 && !evt.shiftKey) { 
+        evt.preventDefault();
         onSendMessage();
       }
-    },
-    'click button#send': function (evt) {
-      onSendMessage();
     }
   });
 }

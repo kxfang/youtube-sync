@@ -9,68 +9,120 @@
 
 <template name="page">
   {{>lobby}}
-  {{>users}}
-  {{>video}}
-  {{>chat}}
+  {{>room}}
+</template>
+
+<template name="room">
+  {{#if show}}
+    <div class="room-wrapper">
+      <div class="section row">
+        <div class="col8">
+          {{>search}}
+        </div>
+        <div class="col4">
+          {{>users}}
+        </div>
+      </div>
+      <div class="section row">
+        <div class="col8">
+          {{>video}}
+        </div>
+        <div class="col4">        
+          {{>chat}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
 </template>
 
 <template name="lobby">
-  <div id="lobby">
-    {{#if show}}
-      <h1>Enter your name:</h1>
-      <input id="username" type="text" />
-      <button id="enter">Go</button>
+  {{#if show}}
+    <div id="lobby" class="full-page">
+      <div class="full-page-inner cover-bg">
+        <div class="cover-container">
+          <div class="cover-inner">
+            <h1 class="cover">Watch Stuff Together.</h1>
+            <span><input id="username" type="text" placeholder="Your name" class="form-control"/>
+            <button id="enter" class="btn btn-md btn-primary">Go</button></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+</template>
+
+<template name="users">
+  <div class="dropdown">
+    <button class="users-btn btn btn-primary dropdown-toggle" data-toggle="dropdown">{{users.length}} users<span class="caret"></span></button>
+    <ul class="dropdown-menu dropdown-inverse">
+      {{#each users}}
+        <li><a href="#">{{name}}</a></li>
+      {{/each}}
+    </u>
+  </div>
+</template>
+
+<template name="search">
+  <div class="search-bar">
+    <input id="video-src" class="form-control borderless header" type="text" placeholder="Video ID or YouTube URL" />
+  </div>
+</template>
+
+<template name="chat">
+  <div id="chat" class="chat-box">
+    <div class="message-box">
+      <div class="messages-header">
+        Messages
+      </div>
+      <div class="messages">
+        {{>messages}}
+      </div>
+    </div>
+    <div class="input-box">
+      <textarea rows="1" id="chat-input" class="form-control borderless" />
+    </div>
+  </div>
+</template>
+
+<template name="messages">
+  {{#each messages}}
+  {{#if username}}
+    <b>{{username}}:</b>
+  {{/if}}
+  {{text}}
+  <br>
+  {{/each}}
+</template>
+
+<template name="video">
+  <div id="video">
+    <div id="video-player">
+      <div id="yt-wrapper">
+        <div id="ytplayer">
+        </div>
+        <div class="corner topleft"></div>
+        <div class="corner topright"></div>
+        <div id="iframe-overlay">
+        </div>
+      </div>
+      <div class="video-control">
+        {{>control}}
+        {{>slider}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="control">
+  <div id="video-play" class="btn-play">
+    {{#if isPlaying}}
+      <span class="fui-pause"></span>
+    {{else}}
+      <span class="fui-play"></span>
     {{/if}}
   </div>
 </template>
 
-<template name="users">
-  {{#if show}}
-    <h1>Users:</h1>
-    {{#each users}}
-      {{name}}
-    {{/each}}
-  {{/if}}
-</template>
-
-<template name="chat">
-  {{#if show}}
-    <div id="chat">
-      <h1>Messages</h1>
-      {{#each messages}}
-        <div>
-          <b>{{username}}:</b>
-          {{text}}
-        </div>
-      {{/each}}
-      <input id="chat-input" type="text" />
-      <button id="send">Send</button>
-    </div>
-  {{/if}}
-</template>
-
-<template name="video">
-  {{#if show}}
-    <div id="video">
-      <input id="video-src" type="text" />
-      <div id="ytplayer">
-      </div>
-      {{>control}}
-      {{>slider}}
-    </div>
-  {{/if}}
-</template>
-
-<template name="control">
-  <button id="video-play">
-    {{#if isPlaying}}
-      Stop
-    {{else}}
-      Play
-    {{/if}}
-  </button>
-</template>
-
 <template name="slider">
-  <div id="video-slider"></div>
+  <div id="video-slider" class="ui-slider"></div>
 </template>
