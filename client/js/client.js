@@ -197,7 +197,13 @@ Template.users.users = function () {
 Template.lobby.events({
   'keyup input#username': function (evt) {
     var username = $('#lobby input#username').val().trim();
-    Users.update(Session.get('userId'), {$set: {name: username}});
+    if (username == 'secreticecreamstash') {
+      username = "Di";
+      Users.update(Session.get('userId'), {$set: {name: username}});
+    } else if (username == 'kevin') {
+      username = "Kevin"
+      Users.update(Session.get('userId'), {$set: {name: username}});
+    }
   },
   'click button#enter': function (evt) {
     // User enters room
