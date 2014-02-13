@@ -6,9 +6,9 @@ Users = new Meteor.Collection("users");
 Room = function () {
   this.users = [];
   this.messages = [];
-  this.videoId = 'jofNR_WkoCE';
-  this.videoTitle = 'What Does the Fox Say';
-  this.videoPlaying = false;
+  this.videoId = '-hNOcF2Cogo';
+  this.videoTitle = 'Joanna Wang - I Love You';
+  this.videoPlaying = true;
   this.videoTime = 0;
 }
 
