@@ -111,9 +111,18 @@
         </div>
       </div>
       <div class="video-control">
+        {{>info}}
         {{>control}}
         {{>slider}}
       </div>
+    </div>
+  </div>
+</template>
+
+<template name="info">
+  <div id="video-info">
+    <div id="video-title">
+      <small>Now playing: {{title}}</small>
     </div>
   </div>
 </template>

@@ -24,6 +24,12 @@ var getRoomId = function () {
   return Rooms.findOne()._id;
 }
 
+var updateVideoTitle = function (roomId, videoId) {
+  $.getJSON('http://gdata.youtube.com/feeds/api/videos?alt=json&q=' + getRoom().videoId, function (data) {
+    Rooms.update(roomId, {$set: { videoTitle: data.feed.entry[0].title.$t }});
+  });
+}
+
 var updateVideo = function (roomId, videoId) {
   Rooms.update(Session.get('roomId'), 
     {$set: 
@@ -69,6 +75,8 @@ window.onYouTubeIframeAPIReady = function () {
         if (getRoom().videoPlaying) {
           player.playVideo();
         }
+
+        updateVideoTitle(Session.get('roomId'));
       }
     }
   });
@@ -84,7 +92,6 @@ window.onYouTubeIframeAPIReady = function () {
       sliderUpdater = Meteor.setInterval(updateTime, 500);
     },
     stop: function (evt, data) {
-      console.log("stop");
       Meteor.clearInterval(sliderUpdater);
       Meteor.call('changeVideoTime', Session.get('roomId'), data.value);
       sliderUpdater = Meteor.setInterval(updateTime, 500);
@@ -113,7 +120,6 @@ window.onYouTubeIframeAPIReady = function () {
         player.seekTo(newState.videoTime);
         sliderUpdater = Meteor.setInterval(updateTime, 500);
       } else if (oldState.messages.length < newState.messages.length) {
-        console.log("here");
         if (messagesBox.scrollTop() + messagesBox.height() > messagesBox[0].scrollHeight - 100) {
           shouldScroll = true;
         }
@@ -170,6 +176,10 @@ Template.control.isPlaying = function () {
 
 Template.control.videoProgress = function() {
   return getRoom().videoTime;
+}
+
+Template.info.title = function() {
+  return getRoom().videoTitle;
 }
 
 Template.users.users = function () {
@@ -242,7 +252,7 @@ Template.search.events({
       }
     }
     sendAdminMessage(Session.get('roomId'), getUsername(Session.get('userId')) + ' changed the video');
-    updateVideo(Session.get('roomId'), videoId);
+    updateVideo(Session.get('roomId'), videoId);    
   }
 }); 
 

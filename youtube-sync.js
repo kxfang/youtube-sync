@@ -7,6 +7,7 @@ Room = function () {
   this.users = [];
   this.messages = [];
   this.videoId = 'jofNR_WkoCE';
+  this.videoTitle = 'What Does the Fox Say';
   this.videoPlaying = false;
   this.videoTime = 0;
 }

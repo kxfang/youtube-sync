@@ -53,26 +53,27 @@ div#video-player {
 
 #video-slider {
   position: absolute;
-  top: 15px;
+  bottom: 0px;
   right: 16px;
   left: 54px;
 }
 
 .video-control {
   position: relative;
-  height: 47px;
+  height: 60px;
+  padding: 15px;
 }
 
 .btn-play {
-  height: 47px;
-  width: 47px;
+  height: 30px;
+  width: 30px;
   background-position: center center;
   background-repeat: no-repeat;
   color: #16A085;
   -webkit-transition: color 0.25s;
   transition: color 0.25s;
   cursor: pointer;
-  top: 6px;
+  bottom: 10px;
   left: 20px;
   position: absolute;
 }
@@ -84,6 +85,10 @@ div#video-player {
 .room-wrapper {
   margin: auto;
   width: 1100px;
+}
+
+#video-info > #video-title {
+  color: white;
 }
 
 .search-bar {
@@ -203,8 +208,14 @@ input.borderless:-ms-input-placeholder { /* Internet Explorer 10+ */
   height: 50px;
 }
 
-small {
+.message-box small {
   color: #aaaaaa;
+}
+
+#video-title {
+  position: relative;
+  top: -22px;
+  left: 4px;
 }
 
 /* Hack to get rounded corners */
