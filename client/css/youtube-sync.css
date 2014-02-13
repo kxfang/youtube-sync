@@ -9,13 +9,23 @@ div.full-page {
   min-height: 100%;
 }
 
-.cover-bg {
+body {
+  background: none;
+  padding: 35px 0;
+}
+
+html {
   background: url(/images/cover.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
+
+div.chat-box {
+  background-color: white;
+}
+
 div.full-page-inner {
   vertical-align: middle;
   display: table-cell;
@@ -115,6 +125,10 @@ div#video-player {
   font-weight: 700;
 }
 
+p.cover {
+  color: white;
+}
+
 .messages-header {
   background-color: #1abc9c;
   color: white;
@@ -160,7 +174,7 @@ input.borderless:-ms-input-placeholder { /* Internet Explorer 10+ */
 }
 
 .section {
-  margin: 45px 0;
+  margin-bottom: 35px
 }
 
 .row > .col8 {
