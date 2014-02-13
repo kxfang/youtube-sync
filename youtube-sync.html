@@ -86,11 +86,16 @@
 
 <template name="messages">
   {{#each messages}}
-  {{#if username}}
-    <b>{{username}}:</b>
-  {{/if}}
-  {{text}}
-  <br>
+    {{#if username}}
+      <b>{{username}}:</b>
+    {{else}}
+      <small>
+    {{/if}}
+    {{text}}
+    {{#unless username}}
+      </small>
+    {{/unless}}
+    <br>
   {{/each}}
 </template>
 

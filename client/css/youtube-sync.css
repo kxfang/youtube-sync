@@ -203,6 +203,10 @@ input.borderless:-ms-input-placeholder { /* Internet Explorer 10+ */
   height: 50px;
 }
 
+small {
+  color: #aaaaaa;
+}
+
 /* Hack to get rounded corners */
 .corner {
   background: url(/images/corner.png) no-repeat top left;

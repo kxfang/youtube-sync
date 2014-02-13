@@ -203,24 +203,32 @@ Template.lobby.events({
   }
 });
 
+var sendAdminMessage = function (roomId, text) {
+  var message = new Message('', text, 'admin');
+  Rooms.update(roomId, {$push: { messages: message }});
+}
+
 var toggleVideoPlay = function () {
   if (!getRoom().videoPlaying) {
     Rooms.update(Session.get('roomId'), {$set: { videoPlaying: true }});
+    sendAdminMessage(Session.get('roomId'), getUsername(Session.get('userId')) + ' started the video');
   } else {
     Rooms.update(Session.get('roomId'), {$set: { videoPlaying: false }});
+    sendAdminMessage(Session.get('roomId'), getUsername(Session.get('userId')) + ' paused the video');
   }
 }
 
 Template.messages.messages = function () {
   return Rooms.findOne(Session.get('roomId')).messages.map(function (message) {
-    message.username = getUsername(message.user);
+    if (message.type == 'user') {
+      message.username = getUsername(message.user);
+    }
     return message;
   });
 };
 
 Template.search.events({    
   'keyup input#video-src': function (evt) {
-  console.log("here");     
     var input = $('input#video-src').val().trim();
     var videoId;
     if (input.indexOf("v=") == -1) {
@@ -233,7 +241,7 @@ Template.search.events({
         videoId = split[1];
       }
     }
-    console.log(videoId);
+    sendAdminMessage(Session.get('roomId'), getUsername(Session.get('userId')) + ' changed the video');
     updateVideo(Session.get('roomId'), videoId);
   }
 }); 

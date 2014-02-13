@@ -15,7 +15,8 @@ User = function (name) {
   this.name = name;
 }
 
-Message = function (user, text) {
+Message = function (user, text, type) {
+  this.type = type ? type : 'user';
   this.user = user;
   this.text = text;
 }
