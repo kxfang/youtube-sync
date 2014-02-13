@@ -91,7 +91,8 @@ window.onYouTubeIframeAPIReady = function () {
     }
   });
 
-
+  var shouldScroll = true;
+  
   roomQuery.observe({
     changed: function (newState, oldState) {
       if (oldState.videoId != newState.videoId) {
@@ -111,18 +112,23 @@ window.onYouTubeIframeAPIReady = function () {
         Meteor.clearInterval(sliderUpdater);
         player.seekTo(newState.videoTime);
         sliderUpdater = Meteor.setInterval(updateTime, 500);
+      } else if (oldState.messages.length < newState.messages.length) {
+        console.log("here");
+        if (messagesBox.scrollTop() + messagesBox.height() > messagesBox[0].scrollHeight - 100) {
+          shouldScroll = true;
+        }
       }
     }
   });
 
-  $("[data-toggle='tooltip']").tooltip();
-
+  // Initialize js components in room
   var messagesBox = $('div.messages');
   messagesBox.scrollTop(messagesBox[0].scrollHeight);
 
   Meteor.setInterval(function () {
-    if (messagesBox.scrollTop() + messagesBox.height() > messagesBox[0].scrollHeight - 100) {
+    if (shouldScroll) {
       messagesBox.scrollTop(messagesBox[0].scrollHeight);
+      shouldScroll = false;
     }
   }, 200);
 
