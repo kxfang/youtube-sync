@@ -192,23 +192,28 @@ Template.users.users = function () {
   return [];
 };
 
+var enterRoom = function (roomId) {
+  var userId = Session.get('userId');
+
+  Session.set('roomId', roomId);
+  Rooms.update(roomId, {$push: {users: userId}});
+
+  // Load Youtube script
+  $.getScript('https://www.youtube.com/iframe_api');
+}
 
 Template.lobby.events({
   'keyup input#username': function (evt) {
     var username = $('#lobby input#username').val().trim();
     Users.update(Session.get('userId'), {$set: {name: username}});
+
+    if (evt.keyCode == 13) {
+      enterRoom(getRoomId());
+    }
   },
   'click button#enter': function (evt) {
     // User enters room
-    var selectedRoomId = getRoomId();
-    var userId = Session.get('userId');
-
-    // Users.update(userId, {$set: {roomId: selectedRoomId}});
-    Session.set('roomId', selectedRoomId);
-    Rooms.update(selectedRoomId, {$push: {users: userId}});
-
-    // Load Youtube script
-    $.getScript('https://www.youtube.com/iframe_api');
+    enterRoom(getRoomId());
   }
 });
 
