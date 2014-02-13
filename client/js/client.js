@@ -75,8 +75,6 @@ window.onYouTubeIframeAPIReady = function () {
         if (getRoom().videoPlaying) {
           player.playVideo();
         }
-
-        updateVideoTitle(Session.get('roomId'));
       }
     }
   });
@@ -105,6 +103,7 @@ window.onYouTubeIframeAPIReady = function () {
       if (oldState.videoId != newState.videoId) {
         // User changed the video
         player.loadVideoById(newState.videoId, getRoom().videoTime, "large");
+        updateVideoTitle(Session.get('roomId'));
         if (!getRoom().videoPlaying) {
           player.pauseVideo();          
         }
