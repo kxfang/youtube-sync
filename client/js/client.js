@@ -222,7 +222,7 @@ Template.lobby.events({
   },
   'click button#enter': function (evt) {
     // User enters room
-    if (isValidUsername(username)) {
+    if (isValidUsername(getUsername(Session.get('userId')))) {
       enterRoom(getRoomId());
     }
   }
