@@ -25,8 +25,8 @@ var getRoomId = function () {
 }
 
 var updateVideoTitle = function (roomId, videoId) {
-  $.getJSON('http://gdata.youtube.com/feeds/api/videos?alt=json&q=' + getRoom().videoId, function (data) {
-    Rooms.update(roomId, {$set: { videoTitle: data.feed.entry[0].title.$t }});
+  $.getJSON('https://gdata.youtube.com/feeds/api/videos/' + getRoom().videoId + '?v=2&alt=json', function (data) {
+    Rooms.update(roomId, {$set: { videoTitle: data.entry.title.$t }});
   });
 }
 
