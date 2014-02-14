@@ -198,6 +198,7 @@ input.borderless:-ms-input-placeholder { /* Internet Explorer 10+ */
   overflow: scroll;
   word-wrap: break-word;
   position: absolute; 
+  font-size: 90%;
 }
 
 .input-box {
