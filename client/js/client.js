@@ -61,6 +61,7 @@ var updateTime = function () {
 window.onbeforeunload = function () {
   // Remove the user from the room
   Rooms.update(Session.get('roomId'), {$pull: { users: Session.get('userId')}});
+  sendAdminMessage(Session.get('roomId'), getUsername(Session.get('userId')) + ' left the room');
 }
 
 window.onYouTubeIframeAPIReady = function () {
@@ -142,6 +143,8 @@ window.onYouTubeIframeAPIReady = function () {
       evt.preventDefault();
     }
   });
+
+  sendAdminMessage(Session.get('roomId'), getUsername(Session.get('userId')) + ' entered the room');
 }
 
 var onSendMessage = function () {
