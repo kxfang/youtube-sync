@@ -70,7 +70,7 @@ window.onYouTubeIframeAPIReady = function () {
     videoId: roomQuery.fetch()[0].videoId,
     width: '800',
     height: '450',
-    playerVars: { autoplay: 0, controls: 0, showinfo: 0 },
+    playerVars: { autoplay: 0, controls: 0, showinfo: 0, iv_load_policy: 3 },
     events: {
       onReady: function (evt) {
         if (getRoom().videoPlaying) {
