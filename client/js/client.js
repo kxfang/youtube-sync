@@ -31,12 +31,28 @@ var updateVideoTitle = function (roomId, videoId) {
 }
 
 var updateVideo = function (roomId, videoId) {
+  sendAdminMessage(Session.get('roomId'), getUsername(Session.get('userId')) + ' changed the video');
   Rooms.update(Session.get('roomId'), 
     {$set: 
       { videoId: videoId,
         videoPlaying: false,
         videoTime: 0
       }});
+}
+
+var getVideoId = function (url) {
+  var videoId;
+  if (url.indexOf("v=") == -1) {
+    videoId = url;
+  } else {
+    var split = url.split("v=");
+    if (split[1].indexOf("&") != -1) {
+      videoId = split[1].split("&")[0];
+    } else {
+      videoId = split[1];
+    }
+  }
+  return videoId;
 }
 
 var player;
@@ -75,6 +91,17 @@ window.onYouTubeIframeAPIReady = function () {
       onReady: function (evt) {
         if (getRoom().videoPlaying) {
           player.playVideo();
+        }
+      },
+      onStateChange: function (evt) {
+        if (evt.data == YT.PlayerState.ENDED) {
+          $('#iframe-overlay').hide();
+        } else if (evt.data == YT.PlayerState.UNSTARTED) {
+          $('#iframe-overlay').show();
+          var videoId = getVideoId(player.getVideoUrl());
+          if (videoId != getRoom().videoId) {
+            updateVideo(Session.get('roomId'), videoId);
+          }
         }
       }
     }
@@ -258,18 +285,7 @@ Template.messages.messages = function () {
 Template.search.events({    
   'keyup input#video-src': function (evt) {
     var input = $('input#video-src').val().trim();
-    var videoId;
-    if (input.indexOf("v=") == -1) {
-      videoId = input;
-    } else {
-      var split = input.split("v=");
-      if (split[1].indexOf("&") != -1) {
-        videoId = split[1].split("&")[0];
-      } else {
-        videoId = split[1];
-      }
-    }
-    sendAdminMessage(Session.get('roomId'), getUsername(Session.get('userId')) + ' changed the video');
+    var videoId = getVideoId(input);
     updateVideo(Session.get('roomId'), videoId);    
   }
 }); 
