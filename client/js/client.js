@@ -11,10 +11,6 @@ var getRoom = function () {
   return Rooms.findOne(Session.get('roomId'));
 }
 
-var inRoom = function () {
-  return Session.get('roomId');
-}
-
 var sendMessage = function (roomId, sender, text) {
   var message = new Message(sender, text);
   Rooms.update(roomId, {$push: {messages: message}});
@@ -187,14 +183,6 @@ Meteor.startup(function () {
   Session.set('userId', userId);
 });
 
-Template.lobby.show = function () {
-  return !inRoom();
-};
-
-Template.room.show = function () {
-  return inRoom();
-}
-
 Template.video.videoId = function () {
   return Rooms.findOne(Session.get('roomId')).videoId;
 }
@@ -223,6 +211,7 @@ Template.users.users = function () {
 };
 
 var enterRoom = function (roomId) {
+  Router.go('room');
   var userId = Session.get('userId');
 
   Session.set('roomId', roomId);
@@ -232,9 +221,9 @@ var enterRoom = function (roomId) {
   $.getScript('https://www.youtube.com/iframe_api');
 }
 
-Template.lobby.events({
+Template.splash.events({
   'keyup input#username': function (evt) {
-    var username = $('#lobby input#username').val().trim();
+    var username = $('#splash input#username').val().trim();
     Users.update(Session.get('userId'), {$set: {name: username}});
 
     if (evt.keyCode == 13) {
