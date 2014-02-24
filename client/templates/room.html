@@ -46,9 +46,13 @@
         {{>messages}}
       </div>
     </div>
-    <div class="input-box">
-      <textarea rows="1" id="chat-input" class="form-control borderless" placeholder="Type messages here" />
-    </div>
+    {{>chatInput}}
+  </div>
+</template>
+
+<template name="chatInput">
+  <div class="input-box">
+    <textarea rows="1" id="chat-input" class="form-control borderless" placeholder="Type messages here" />
   </div>
 </template>
 
