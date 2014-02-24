@@ -1,55 +1,22 @@
-<head>
-  <title>youtube-sync</title>
-  <script type="text/javascript"></script>
-</head>
-
-<body>
-  {{> page}}
-</body>
-
-<template name="page">
-  {{>lobby}}
-  {{>room}}
-</template>
-
 <template name="room">
-  {{#if show}}
-    <div class="room-wrapper">
-      <div class="section row">
-        <div class="col8">
-          {{>search}}
-        </div>
-        <div class="col4">
-          {{>users}}
-        </div>
+  <div class="room-wrapper">
+    <div class="section row">
+      <div class="col8">
+        {{>search}}
       </div>
-      <div class="section row">
-        <div class="col8">
-          {{>video}}
-        </div>
-        <div class="col4">        
-          {{>chat}}
-        </div>
+      <div class="col4">
+        {{>users}}
       </div>
     </div>
-  {{/if}}
-</template>
-
-<template name="lobby">
-  {{#if show}}
-    <div id="lobby" class="full-page">
-      <div class="full-page-inner cover-bg">
-        <div class="cover-container">
-          <div class="cover-inner">
-            <h1 class="cover">Watch Stuff Together.</h1>
-            <p class="cover">An awesome Valentine's Day gift brought to you by the ever so awesome Kevin</p>
-            <span><input id="username" type="password" placeholder="Super secret password" class="form-control"/>
-            <button id="enter" class="btn btn-md btn-primary">Go</button></span>
-          </div>
-        </div>
+    <div class="section row">
+      <div class="col8">
+        {{>video}}
+      </div>
+      <div class="col4">        
+        {{>chat}}
       </div>
     </div>
-  {{/if}}
+  </div>
 </template>
 
 <template name="users">
